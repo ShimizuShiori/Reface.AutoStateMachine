@@ -3,8 +3,8 @@
 namespace Reface.AutoStateMachine.CsvBuilder
 {
 	public class CsvStateMachineBuilder<TState, TAction> : IStateMachineBuilder<TState, TAction>
-		where TState : struct
-		where TAction : struct
+		where TState : notnull
+		where TAction : notnull
 	{
 		private readonly CodeStateMachineBuilder<TState, TAction> codeStateMachineBuilder = new CodeStateMachineBuilder<TState, TAction>();
 		private readonly string text;

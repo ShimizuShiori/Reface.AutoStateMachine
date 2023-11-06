@@ -15,7 +15,7 @@
 
 		public override string ToString()
 		{
-			return $"[{From}]--[{Action}]-->[{To}]";
+			return $"{From} --> {To} : {Action}";
 		}
 	}
 }

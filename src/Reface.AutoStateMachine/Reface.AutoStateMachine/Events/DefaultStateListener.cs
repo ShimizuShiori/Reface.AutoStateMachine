@@ -1,6 +1,8 @@
 ﻿namespace Reface.AutoStateMachine.Events
 {
 	public class DefaultStateListener<TState, TAction> : IStateListener<TState, TAction>
+		where TState : notnull
+		where TAction : notnull
 	{
 		public event EventHandler<StateLeavingEventArgs<TState, TAction>>? Leaving;
 		public event EventHandler<StateEnteredEventArgs<TState, TAction>>? Entered;

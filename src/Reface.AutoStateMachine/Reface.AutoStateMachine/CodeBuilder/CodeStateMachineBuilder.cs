@@ -4,19 +4,16 @@ using Reface.AutoStateMachine.Errors;
 namespace Reface.AutoStateMachine.CodeBuilder
 {
 	public class CodeStateMachineBuilder<TState, TAction> : IStateMachineBuilder<TState, TAction>
-		where TState : struct
-		where TAction : struct
+		where TState : notnull
+		where TAction : notnull
 	{
 		private readonly IList<StateMoveInfo<TState, TAction>> stateMoveInfos
 			= new List<StateMoveInfo<TState, TAction>>();
 		private TState? startState;
-		private IStateMoveInfoSearcher<TState, TAction> stateMoveInfoSearcher;
-		private HashSet<TState> stopStateSet;
+		private HashSet<TState>? stopStateSet;
 
 		public CodeStateMachineBuilder<TState, TAction> Move(TState from, TAction action, TState to)
 		{
-			if (stateMoveInfoSearcher != null)
-				stateMoveInfoSearcher = null;
 			stateMoveInfos.Add(new StateMoveInfo<TState, TAction>(from, action, to));
 			return this;
 		}
@@ -35,24 +32,24 @@ namespace Reface.AutoStateMachine.CodeBuilder
 
 		public IStateMachine<TState, TAction> Build()
 		{
-			if (stateMoveInfoSearcher == null)
-				stateMoveInfoSearcher = new DefaultStateMoveInfoSearcher<TState, TAction>(stateMoveInfos);
+			var stateMoveInfoSearcher = new DefaultStateMoveInfoSearcher<TState, TAction>(stateMoveInfos);
 
-			if (!IsDefaultStateExists())
+			if (startState == null)
 				startState = GetDefaultState();
 
-			if (!IsDefaultStateExists())
+			if (startState == null)
 				throw new CodeStateMachineBuilderBuildException("Failed to Build as there is no default State.");
 
-			if (!IsStopStateExists())
+			if (stopStateSet == null)
 				stopStateSet = new HashSet<TState>(GetStopStates());
-			if (!IsStopStateExists())
+
+			if (stopStateSet == null)
 				stopStateSet = new HashSet<TState>();
 
-			return new CodeStateMachine<TState, TAction>(stateMoveInfoSearcher, startState.Value, stopStateSet);
+			return new CodeStateMachine<TState, TAction>(stateMoveInfoSearcher, startState, stopStateSet);
 		}
 
-		private TState GetDefaultState()
+		private TState? GetDefaultState()
 		{
 			var fields = EnumHelper.GetItemsByAttribute<TState, StartStateAttribute>();
 			if (fields.Count != 1) return default;
@@ -63,15 +60,6 @@ namespace Reface.AutoStateMachine.CodeBuilder
 		{
 			var fields = EnumHelper.GetItemsByAttribute<TState, StopStateAttribute>();
 			return fields.Select(x => (TState)Enum.Parse(typeof(TState), x.Name));
-		}
-
-		private bool IsDefaultStateExists()
-		{
-			return startState != null && startState.HasValue;
-		}
-		private bool IsStopStateExists()
-		{
-			return stopStateSet != null;
 		}
 	}
 }

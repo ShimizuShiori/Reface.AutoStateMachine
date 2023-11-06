@@ -3,6 +3,8 @@
 namespace Reface.AutoStateMachine
 {
 	public interface IStateMachine<TState, TAction>
+		where TState : notnull
+		where TAction : notnull
 	{
 		event EventHandler<StateMachinePushedEventArgs<TState, TAction>> Pushed;
 		event EventHandler<StateMachineStopedEventArgs<TState, TAction>> Stopped;

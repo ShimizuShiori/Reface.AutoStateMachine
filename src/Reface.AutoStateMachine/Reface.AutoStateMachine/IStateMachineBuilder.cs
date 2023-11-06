@@ -1,8 +1,8 @@
 ﻿namespace Reface.AutoStateMachine
 {
 	public interface IStateMachineBuilder<TState, TAction>
-		where TState : struct
-		where TAction : struct
+		where TState : notnull
+		where TAction : notnull
 	{
 		IStateMachine<TState, TAction> Build();
 	}

@@ -3,6 +3,8 @@
 namespace Reface.AutoStateMachine.CodeBuilder
 {
 	public class CodeStateMachine<TState, TAction> : IStateMachine<TState, TAction>
+		where TState : notnull
+		where TAction : notnull
 	{
 		private readonly IStateMoveInfoSearcher<TState, TAction> stateMoveInfoSearcher;
 		private TState currentState;
@@ -16,8 +18,8 @@ namespace Reface.AutoStateMachine.CodeBuilder
 			stopStates = stopState;
 		}
 
-		public event EventHandler<StateMachinePushedEventArgs<TState, TAction>> Pushed;
-		public event EventHandler<StateMachineStopedEventArgs<TState, TAction>> Stopped;
+		public event EventHandler<StateMachinePushedEventArgs<TState, TAction>>? Pushed;
+		public event EventHandler<StateMachineStopedEventArgs<TState, TAction>>? Stopped;
 
 		public IStateListener<TState, TAction> GetStateListener(TState state)
 		{
@@ -26,7 +28,7 @@ namespace Reface.AutoStateMachine.CodeBuilder
 
 		private DefaultStateListener<TState, TAction> GetStateListenerAsDefaultStateListener(TState state)
 		{
-			DefaultStateListener<TState, TAction> result;
+			DefaultStateListener<TState, TAction>? result;
 			if (!listeners.TryGetValue(state, out result))
 			{
 				result = new DefaultStateListener<TState, TAction>();

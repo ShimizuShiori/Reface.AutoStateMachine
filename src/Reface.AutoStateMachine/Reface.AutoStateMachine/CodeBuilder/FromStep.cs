@@ -1,8 +1,8 @@
 ﻿namespace Reface.AutoStateMachine.CodeBuilder
 {
 	public class FromStep<TState, TAction>
-		where TState : struct
-		where TAction : struct
+		where TState : notnull
+		where TAction : notnull
 	{
 		private readonly CodeStateMachineBuilder<TState, TAction> codeStateMachineBuilder;
 		private readonly TState from;
