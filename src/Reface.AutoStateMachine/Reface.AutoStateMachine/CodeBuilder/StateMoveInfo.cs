@@ -15,7 +15,7 @@
 
 		public override string ToString()
 		{
-			return $"[{From.ToString()}]--[{Action.ToString()}]-->[{To.ToString()}]";
+			return $"[{From}]--[{Action}]-->[{To}]";
 		}
 	}
 }

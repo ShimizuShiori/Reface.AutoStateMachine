@@ -27,7 +27,7 @@ namespace Reface.AutoStateMachine.CodeBuilder
 				}
 
 				if (!moveInfo.To.Equals(info.To))
-					throw new CodeStateMachineBuilderBuildException($"[{info.From.ToString()}]--[{info.Action.ToString()}]-->[{info.To.ToString()} , {moveInfo.To.ToString()}] 存在两个目标，无法构建状态机");
+					throw new CodeStateMachineBuilderBuildException($"Duplicated Transformation: [{info.From}]--[{info.Action}]-->[{info.To} , {moveInfo.To}]");
 			}
 		}
 

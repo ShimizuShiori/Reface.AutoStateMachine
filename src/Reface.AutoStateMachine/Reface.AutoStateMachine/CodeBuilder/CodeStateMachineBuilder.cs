@@ -42,7 +42,7 @@ namespace Reface.AutoStateMachine.CodeBuilder
 				startState = GetDefaultState();
 
 			if (!IsDefaultStateExists())
-				throw new CodeStateMachineBuilderBuildException("没有指定默认状态，无法构建");
+				throw new CodeStateMachineBuilderBuildException("Failed to Build as there is no default State.");
 
 			if (!IsStopStateExists())
 				stopStateSet = new HashSet<TState>(GetStopStates());
